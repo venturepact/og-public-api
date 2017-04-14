@@ -27,7 +27,7 @@
     "tags": [
      "Calculators"
     ],
-    "summary": "List all 'Calculator/Quiz'",
+    "summary": "List all 'Calculator/Quiz in your outgrow account'",
     "description": "Returns 'Calculator/Quiz' of particular company",
     "operationId": "getCalculator",
     "produces": [
