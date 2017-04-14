@@ -4,7 +4,7 @@
   "version": "v1",
   "title": "Outgrow Public API"
  },
- "host": "https://outgrow-api.herokuapp.com",
+ "host": "outgrow-api.herokuapp.com",
  "basePath": "/api/v1",
  "schemes": [
   "http",
