@@ -279,7 +279,7 @@ definitions:
       calculator:
         type: string
         description: Live Calculator Id
-        example: 1234567890
+        example: 583d4905dc1ca6535edf1504
       type:
         type: string
         default: lead
