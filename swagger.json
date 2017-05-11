@@ -185,6 +185,57 @@
      }
     }
    }
+  },
+  "/analytics/{calculators}": {
+   "get": {
+    "tags": [
+     "Analytics"
+    ],
+    "summary": "Gets Calculator/Quiz Analytics",
+    "description": "Gets all the Analytics of the calculator based on Live Calculator Id",
+    "produces": [
+     "application/json"
+    ],
+    "parameters": [
+     {
+      "name": "calculators",
+      "in": "path",
+      "required": true,
+      "description": "Live Calculator Id",
+      "type": "string"
+     },
+     {
+      "name": "start_date",
+      "in": "query",
+      "description": "Filter based on analytics of calculator start date\nformat: YYYY-MM-DD\n",
+      "required": false,
+      "type": "string",
+      "format": "date"
+     },
+     {
+      "name": "end_date",
+      "in": "query",
+      "description": "Filter based on analytics of calculator start date\nformat: YYYY-MM-DD\n",
+      "required": false,
+      "type": "string",
+      "format": "date"
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Success",
+      "schema": {
+       "$ref": "#/definitions/AnalyticsListBody"
+      }
+     },
+     "default": {
+      "description": "Error",
+      "schema": {
+       "$ref": "#/definitions/ErrorResponse"
+      }
+     }
+    }
+   }
   }
  },
  "securityDefinitions": {
@@ -196,6 +247,36 @@
   }
  },
  "definitions": {
+  "ErrorResponse": {
+   "required": [
+    "response"
+   ],
+   "properties": {
+    "response": {
+     "type": "array",
+     "items": {
+      "$ref": "#/definitions/ErrorResponse_response"
+     }
+    }
+   }
+  },
+  "ErrorResponse_response": {
+   "required": [
+    "code",
+    "message"
+   ],
+   "properties": {
+    "code": {
+     "type": "integer"
+    },
+    "message": {
+     "type": "string"
+    },
+    "description": {
+     "type": "string"
+    }
+   }
+  },
   "CalculatorListBody": {
    "required": [
     "calculators"
@@ -344,33 +425,43 @@
     }
    }
   },
-  "ErrorResponse": {
+  "LeadPostBody": {
    "required": [
-    "response"
+    "calculator",
+    "type",
+    "lead"
    ],
    "properties": {
-    "response": {
+    "calculator": {
+     "type": "string",
+     "description": "Live Calculator Id",
+     "example": "5892d26dcbff7e0b1c34bf65"
+    },
+    "type": {
+     "type": "string",
+     "default": "lead",
+     "enum": [
+      "lead"
+     ],
+     "description": "Type Based:\n  * lead: Leadform Fields\n"
+    },
+    "lead": {
      "type": "array",
+     "description": "Put all required Fields",
      "items": {
-      "$ref": "#/definitions/ErrorResponse_response"
+      "type": "object",
+      "properties": {
+       "key": {
+        "type": "string",
+        "description": "Fields Key name",
+        "example": "email"
+       },
+       "value": {
+        "type": "string",
+        "example": "admin@admin.com"
+       }
+      }
      }
-    }
-   }
-  },
-  "ErrorResponse_response": {
-   "required": [
-    "code",
-    "message"
-   ],
-   "properties": {
-    "code": {
-     "type": "integer"
-    },
-    "message": {
-     "type": "string"
-    },
-    "description": {
-     "type": "string"
     }
    }
   },
@@ -409,43 +500,57 @@
     }
    }
   },
-  "LeadPostBody": {
+  "AnalyticsListBody": {
    "required": [
-    "calculator",
-    "type",
-    "lead"
+    "data",
+    "success"
    ],
    "properties": {
-    "calculator": {
-     "type": "string",
-     "description": "Live Calculator Id",
-     "example": 1234567890
-    },
-    "type": {
-     "type": "string",
-     "default": "lead",
-     "enum": [
-      "lead"
-     ],
-     "description": "Type Based:\n  * lead: Leadform Fields\n"
-    },
-    "lead": {
-     "type": "array",
-     "description": "Put all required Fields",
+    "data": {
+     "type": "object",
      "items": {
-      "type": "object",
       "properties": {
-       "key": {
-        "type": "string",
-        "description": "Fields Key name",
-        "example": "email"
+       "unique_visitors": {
+        "type": "number"
        },
-       "value": {
-        "type": "string",
-        "example": "admin@admin.com"
+       "visitors": {
+        "type": "number"
+       },
+       "time_on_page": {
+        "type": "string"
+       },
+       "conversions": {
+        "type": "number"
+       },
+       "conversion_rate": {
+        "type": "string"
+       },
+       "avg_response": {
+        "type": "string"
+       },
+       "engagements": {
+        "type": "string"
+       },
+       "calc_starts": {
+        "type": "string"
+       },
+       "deviceCategory": {
+        "type": "array"
+       },
+       "browser": {
+        "type": "array"
+       },
+       "country": {
+        "type": "array"
+       },
+       "socialNetwork": {
+        "type": "array"
        }
       }
      }
+    },
+    "success": {
+     "type": "boolean"
     }
    }
   }
@@ -487,7 +592,7 @@
   "CreatedFrom": {
    "name": "created_from",
    "in": "query",
-   "description": "Filter based on created from date",
+   "description": "Filter based on created from date\nformat: YYYY-MM-DD\n",
    "required": false,
    "type": "string",
    "format": "date"
@@ -495,7 +600,7 @@
   "CreatedTo": {
    "name": "created_to",
    "in": "query",
-   "description": "Filter based on created to date",
+   "description": "Filter based on created from date\nformat: YYYY-MM-DD\n",
    "required": false,
    "type": "string",
    "format": "date"
