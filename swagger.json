@@ -127,6 +127,22 @@
       "description": "Number of Leads to return. For all: -1 or without Limit key all leads comes",
       "required": false,
       "type": "integer"
+     },
+     {
+      "name": "start_date",
+      "in": "query",
+      "description": "Filter Leads based on calculator start date\nformat: YYYY-MM-DD\n",
+      "required": false,
+      "type": "string",
+      "format": "date"
+     },
+     {
+      "name": "end_date",
+      "in": "query",
+      "description": "Filter Leads based on calculator end date\nformat: YYYY-MM-DD\n",
+      "required": false,
+      "type": "string",
+      "format": "date"
      }
     ],
     "responses": {
