@@ -495,11 +495,7 @@
          "boolean"
         ],
         "description": "Set this property for the value of options\n",
-        "example": [
-         "test",
-         1,
-         true
-        ]
+        "example": "test"
        },
        "answer": {
         "type": "string",
