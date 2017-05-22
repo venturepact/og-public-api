@@ -486,16 +486,12 @@
        "key": {
         "type": "string",
         "description": "Questions Field key name",
-        "example": "what_is_your_calculator_name?"
+        "example": "question_1"
        },
        "value": {
-        "type": [
-         "string",
-         "number",
-         "boolean"
-        ],
+        "type": "number",
         "description": "Set this property for the value of options\n",
-        "example": "test"
+        "example": 1
        },
        "answer": {
         "type": "string",
