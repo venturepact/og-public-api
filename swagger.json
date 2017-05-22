@@ -80,7 +80,6 @@
      {
       "name": "lead",
       "in": "body",
-      "description": "search criteria",
       "required": true,
       "schema": {
        "$ref": "#/definitions/LeadPostBody"
@@ -88,11 +87,17 @@
      }
     ],
     "responses": {
-     "204": {
-      "description": "Leads succesfully created."
+     "200": {
+      "description": "Leads succesfully created.",
+      "schema": {
+       "$ref": "#/definitions/LeadCreatedBody"
+      }
      },
      "400": {
-      "description": "Leads couldn't have been created."
+      "description": "Leads couldn't have been created.",
+      "schema": {
+       "$ref": "#/definitions/ErrorResponse"
+      }
      }
     }
    }
@@ -163,9 +168,11 @@
       "in": "query",
       "required": true,
       "type": "string",
-      "default": "lead",
+      "default": "leads",
       "enum": [
-       "lead"
+       "leads",
+       "questions",
+       "results"
       ],
       "description": "Type Based:\n  * lead: Gets LeadForm Field of Calculator\n"
      }
@@ -427,9 +434,7 @@
   },
   "LeadPostBody": {
    "required": [
-    "calculator",
-    "type",
-    "lead"
+    "calculator"
    ],
    "properties": {
     "calculator": {
@@ -437,15 +442,7 @@
      "description": "Live Calculator Id",
      "example": "5892d26dcbff7e0b1c34bf65"
     },
-    "type": {
-     "type": "string",
-     "default": "lead",
-     "enum": [
-      "lead"
-     ],
-     "description": "Type Based:\n  * lead: Leadform Fields\n"
-    },
-    "lead": {
+    "leads": {
      "type": "array",
      "description": "Put all required Fields",
      "items": {
@@ -462,6 +459,63 @@
        }
       }
      }
+    },
+    "questions": {
+     "type": "array",
+     "description": "Put Your Calculator Questions",
+     "items": {
+      "type": "object",
+      "properties": {
+       "key": {
+        "type": "string",
+        "description": "Questions Field key name",
+        "example": "what_is_your_calculator_name?"
+       },
+       "value": {
+        "type": [
+         "string",
+         "number",
+         "boolean"
+        ],
+        "description": "Set this property for the value of options\n",
+        "example": [
+         "test",
+         1,
+         true
+        ]
+       },
+       "answer": {
+        "type": "string",
+        "description": "Set this property when ever options has some text(don't use for slider)\n",
+        "example": "less than 1"
+       }
+      }
+     }
+    }
+   }
+  },
+  "LeadCreatedBody": {
+   "required": [
+    "success"
+   ],
+   "properties": {
+    "success": {
+     "type": "string"
+    },
+    "leads": {
+     "type": "array",
+     "items": {
+      "type": "object"
+     }
+    },
+    "questions": {
+     "type": "array",
+     "items": {
+      "type": "object"
+     }
+    },
+    "message": {
+     "type": "string"
     }
    }
   },
