@@ -184,8 +184,9 @@
       "in": "query",
       "required": true,
       "type": "string",
-      "default": "leads",
+      "default": "all",
       "enum": [
+       "all",
        "leads",
        "questions",
        "results"
