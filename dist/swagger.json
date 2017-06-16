@@ -4,7 +4,7 @@
   "version": "v1",
   "title": "Outgrow Public API"
  },
- "host": "outgrow-api.herokuapp.com",
+ "host": "api.outgrow.co",
  "basePath": "/api/v1",
  "schemes": [
   "https",
@@ -127,22 +127,6 @@
       "description": "Number of Leads to return. For all: -1 or without Limit key all leads comes",
       "required": false,
       "type": "integer"
-     },
-     {
-      "name": "start_date",
-      "in": "query",
-      "description": "Filter Leads based on calculator start date\nformat: YYYY-MM-DD\n",
-      "required": false,
-      "type": "string",
-      "format": "date"
-     },
-     {
-      "name": "end_date",
-      "in": "query",
-      "description": "Filter Leads based on calculator end date\nformat: YYYY-MM-DD\n",
-      "required": false,
-      "type": "string",
-      "format": "date"
      }
     ],
     "responses": {
@@ -184,9 +168,8 @@
       "in": "query",
       "required": true,
       "type": "string",
-      "default": "all",
+      "default": "leads",
       "enum": [
-       "all",
        "leads",
        "questions",
        "results"
@@ -486,12 +469,20 @@
        "key": {
         "type": "string",
         "description": "Questions Field key name",
-        "example": "question_1"
+        "example": "what_is_your_calculator_name?"
        },
        "value": {
-        "type": "number",
+        "type": [
+         "string",
+         "number",
+         "boolean"
+        ],
         "description": "Set this property for the value of options\n",
-        "example": 1
+        "example": [
+         "test",
+         1,
+         true
+        ]
        },
        "answer": {
         "type": "string",
