@@ -1,679 +1,680 @@
 {
- "swagger": "2.0",
- "info": {
-  "version": "v1",
-  "title": "Outgrow Public API"
- },
- "host": "api.outgrow.co",
- "basePath": "/api/v1",
- "schemes": [
-  "https",
-  "http"
- ],
- "consumes": [
-  "application/json"
- ],
- "produces": [
-  "application/json"
- ],
- "security": [
-  {
-   "UserSecurity": []
-  }
- ],
- "paths": {
-  "/calculator": {
-   "get": {
-    "tags": [
-     "Calculators"
+    "swagger": "2.0",
+    "info": {
+        "version": "v1",
+        "title": "Outgrow Public API"
+    },
+    "host": "api.outgrow.co",
+    "basePath": "/api/v1",
+    "schemes": [
+        "https",
+        "http"
     ],
-    "summary": "List all 'Calculator/Quiz in your outgrow account'",
-    "description": "Returns 'Calculator/Quiz' of particular company",
-    "operationId": "getCalculator",
+    "consumes": [
+        "application/json"
+    ],
     "produces": [
-     "application/json"
+        "application/json"
     ],
-    "parameters": [
-     {
-      "$ref": "#/parameters/CalculatorStatus"
-     },
-     {
-      "$ref": "#/parameters/Limit"
-     },
-     {
-      "$ref": "#/parameters/CalculatorType"
-     },
-     {
-      "$ref": "#/parameters/CreatedFrom"
-     },
-     {
-      "$ref": "#/parameters/CreatedTo"
-     },
-     {
-      "$ref": "#/parameters/SortBy"
-     }
+    "security": [
+        {
+            "UserSecurity": []
+        }
     ],
-    "responses": {
-     "200": {
-      "description": "Success",
-      "schema": {
-       "$ref": "#/definitions/CalculatorListBody"
-      }
-     },
-     "default": {
-      "description": "Error",
-      "schema": {
-       "$ref": "#/definitions/CalculatorErrorResponse"
-      }
-     }
+    "paths": {
+        "/calculator": {
+            "get": {
+                "tags": [
+                    "Calculators"
+                ],
+                "summary": "List all 'Calculators/Quizzes/Polls in your Outgrow account'",
+                "description": "Fetch 'Calculator or Quiz' in either live or draft mode of a company using API key",
+                "operationId": "getCalculator",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/CalculatorStatus"
+                    },
+                    {
+                        "$ref": "#/parameters/Limit"
+                    },
+                    {
+                        "$ref": "#/parameters/CalculatorType"
+                    },
+                    {
+                        "$ref": "#/parameters/CreatedFrom"
+                    },
+                    {
+                        "$ref": "#/parameters/CreatedTo"
+                    },
+                    {
+                        "$ref": "#/parameters/SortBy"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/CalculatorListBody"
+                        }
+                    },
+                    "default": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/CalculatorErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/leads/add": {
+            "post": {
+                "tags": [
+                    "Leads"
+                ],
+                "summary": "Creates a Lead",
+                "description": "Adds a new lead to the calculator.",
+                "parameters": [
+                    {
+                        "name": "lead",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/LeadPostBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Leads succesfully created.",
+                        "schema": {
+                            "$ref": "#/definitions/LeadCreatedBody"
+                        }
+                    },
+                    "400": {
+                        "description": "Leads couldn't have been created.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/leads/{calculator}": {
+            "get": {
+                "tags": [
+                    "Leads"
+                ],
+                "summary": "Get leads data",
+                "description": "Returns 'Leads' of particular Calculator/Quiz/Poll",
+                "operationId": "getLeads",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "calculator",
+                        "in": "path",
+                        "required": true,
+                        "description": "Enter the unique id of your Live calculator/quiz/poll",
+                        "type": "string"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Enter the number of leads you want API to return. Use -1 or leave blank to fetch all the leads of the calculator/quiz/poll.",
+                        "required": false,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/LeadListBody"
+                        }
+                    },
+                    "default": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/fields/{calculator}": {
+            "get": {
+                "tags": [
+                    "Fields"
+                ],
+                "summary": "Get Calculator/Quiz/Poll Fields",
+                "description": null,
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "calculator",
+                        "in": "path",
+                        "required": true,
+                        "description": "Enter the unique id of your Live calculator/quiz/poll",
+                        "type": "string"
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "required": true,
+                        "type": "string",
+                        "default": "leads",
+                        "enum": [
+                            "leads",
+                            "questions",
+                            "results"
+                        ],
+                        "description": "Type Based:\n  * lead: Gets the configuration of the Lead generation (optin) form  of your Outgrow app.\n  * Questions:  Gets the configuration of the Questions on your Outgrow app.\n  * Results: Gets the configuration of the Results/ Outcome/ Score fields of your Outgrow app.\n"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/FieldListBody"
+                        }
+                    },
+                    "default": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/analytics/{calculators}": {
+            "get": {
+                "tags": [
+                    "Analytics"
+                ],
+                "summary": "Gets Calculator/Quiz Analytics",
+                "description": "Gets the Analytics of the Live Calculator/ Quiz/Poll with the details of all the leads.",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "calculators",
+                        "in": "path",
+                        "required": true,
+                        "description": "Enter the unique id of your Live calculator/quiz/poll",
+                        "type": "string"
+                    },
+                    {
+                        "name": "start_date",
+                        "in": "query",
+                        "description": "Fetch leads from a given date :YYYY-MM-DD\nformat: YYYY-MM-DD\n",
+                        "required": false,
+                        "type": "string",
+                        "format": "date"
+                    },
+                    {
+                        "name": "end_date",
+                        "in": "query",
+                        "description": "Fetch leads till a given date :YYYY-MM-DD\nformat: YYYY-MM-DD\n",
+                        "required": false,
+                        "type": "string",
+                        "format": "date"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/AnalyticsListBody"
+                        }
+                    },
+                    "default": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "UserSecurity": {
+            "description": "Your API Key",
+            "type": "apiKey",
+            "name": "API-Key",
+            "in": "header"
+        }
+    },
+    "definitions": {
+        "ErrorResponse": {
+            "required": [
+                "response"
+            ],
+            "properties": {
+                "response": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ErrorResponse_response"
+                    }
+                }
+            }
+        },
+        "ErrorResponse_response": {
+            "required": [
+                "code",
+                "message"
+            ],
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                }
+            }
+        },
+        "CalculatorListBody": {
+            "required": [
+                "calculators"
+            ],
+            "properties": {
+                "calculators": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Calculator"
+                    }
+                }
+            }
+        },
+        "Calculator": {
+            "required": [
+                "createdAt",
+                "id",
+                "name",
+                "state",
+                "type"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "meta_data": {
+                    "$ref": "#/definitions/Calculator_meta_data"
+                }
+            }
+        },
+        "CalculatorErrorResponse": {
+            "required": [
+                "response"
+            ],
+            "properties": {
+                "response": {
+                    "type": "object",
+                    "items": {
+                        "$ref": "#/definitions/CalculatorErrorResponse_response"
+                    }
+                }
+            }
+        },
+        "Calculator_meta_data": {
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "favicon": {
+                    "type": "string"
+                },
+                "ga_tracking_id": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                }
+            }
+        },
+        "CalculatorErrorResponse_response": {
+            "required": [
+                "message"
+            ],
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                }
+            }
+        },
+        "LeadListBody": {
+            "required": [
+                "calculators"
+            ],
+            "properties": {
+                "calculators": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Lead"
+                    }
+                }
+            }
+        },
+        "Lead": {
+            "required": [
+                "id",
+                "calc_name",
+                "created_at"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "calc_name": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "user_info": {
+                    "type": "object"
+                },
+                "location": {
+                    "type": "object"
+                },
+                "results": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "questions": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "total_question": {
+                    "type": "number"
+                },
+                "answered": {
+                    "type": "number"
+                }
+            }
+        },
+        "LeadPostBody": {
+            "required": [
+                "calculator"
+            ],
+            "properties": {
+                "calculator": {
+                    "type": "string",
+                    "description": "Live Calculator Id",
+                    "example": "5892d26dcbff7e0b1c34bf65"
+                },
+                "leads": {
+                    "type": "array",
+                    "description": "Enter the fields of Lead form in key value pair format",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string",
+                                "description": "The identifier used for the field",
+                                "example": "email"
+                            },
+                            "value": {
+                                "type": "string",
+                                "description": "Sample of value for the field",
+                                "example": "admin@admin.com"
+                            }
+                        }
+                    }
+                },
+                "questions": {
+                    "type": "array",
+                    "description": "Enter the questions and responses related data",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string",
+                                "description": "Questions Field key name",
+                                "example": "what_is_your_calculator_name?"
+                            },
+                            "value": {
+                                "type": [
+                                    "string",
+                                    "number",
+                                    "boolean"
+                                ],
+                                "description": "Set this property for the value of options\n",
+                                "example": [
+                                    "test",
+                                    1,
+                                    true
+                                ]
+                            },
+                            "answer": {
+                                "type": "string",
+                                "description": "Set this property when ever options has some text(don't use for slider)\n",
+                                "example": "less than 1"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "LeadCreatedBody": {
+            "required": [
+                "success"
+            ],
+            "properties": {
+                "success": {
+                    "type": "string"
+                },
+                "leads": {
+                    "type": "array",
+                    "items": {
+                        "type": "object"
+                    }
+                },
+                "questions": {
+                    "type": "array",
+                    "items": {
+                        "type": "object"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "FieldListBody": {
+            "required": [
+                "response"
+            ],
+            "properties": {
+                "response": {
+                    "type": "object"
+                },
+                "success": {
+                    "type": "boolean"
+                },
+                "fields": {
+                    "type": "array",
+                    "items": {
+                        "required": [
+                            "key"
+                        ],
+                        "properties": {
+                            "id": {
+                                "type": "number"
+                            },
+                            "key": {
+                                "type": "string"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "type": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "AnalyticsListBody": {
+            "required": [
+                "data",
+                "success"
+            ],
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "items": {
+                        "properties": {
+                            "unique_visitors": {
+                                "type": "number"
+                            },
+                            "visitors": {
+                                "type": "number"
+                            },
+                            "time_on_page": {
+                                "type": "string"
+                            },
+                            "conversions": {
+                                "type": "number"
+                            },
+                            "conversion_rate": {
+                                "type": "string"
+                            },
+                            "avg_response": {
+                                "type": "string"
+                            },
+                            "engagements": {
+                                "type": "string"
+                            },
+                            "calc_starts": {
+                                "type": "string"
+                            },
+                            "deviceCategory": {
+                                "type": "array"
+                            },
+                            "browser": {
+                                "type": "array"
+                            },
+                            "country": {
+                                "type": "array"
+                            },
+                            "socialNetwork": {
+                                "type": "array"
+                            }
+                        }
+                    }
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        }
+    },
+    "parameters": {
+        "CalculatorStatus": {
+            "name": "status",
+            "in": "query",
+            "description": "Select publish status of calculator/quiz",
+            "required": false,
+            "type": "string",
+            "default": "Both",
+            "enum": [
+                "Both",
+                "Live",
+                "Draft"
+            ]
+        },
+        "Limit": {
+            "name": "limit",
+            "in": "query",
+            "description": "Enter the number of calculator/ quiz to fetch",
+            "required": false,
+            "type": "integer"
+        },
+        "CalculatorType": {
+            "name": "type",
+            "in": "query",
+            "description": "Select the type of experience you want to fetch",
+            "required": false,
+            "type": "string",
+            "default": "Both",
+            "enum": [
+                "Both",
+                "Calculator",
+                "Quiz"
+            ]
+        },
+        "CreatedFrom": {
+            "name": "created_from",
+            "in": "query",
+            "description": "Fetch calculators created on or after a particular date. Date format to be used is\n format: YYYY-MM-DD\n",
+            "required": false,
+            "type": "string",
+            "format": "date"
+        },
+        "CreatedTo": {
+            "name": "created_to",
+            "in": "query",
+            "description": "Fetch calculators created till a particular date. Date format to be used is \n format: YYYY-MM-DD\n",
+            "required": false,
+            "type": "string",
+            "format": "date"
+        },
+        "SortBy": {
+            "name": "sort",
+            "in": "query",
+            "description": "Sort\n the fetch list on following parameters:\n  \ntype | description\n---- | -----------\nalpha_asc:  | Sort list of Calculator/Quiz fetched in Ascending Alphabetic order\nalpha_desc: | Sort list of Calculator/Quiz fetched in Descending Alphabetic order\ncreated_date_asc: | Sort list of Calculator/Quiz fetched in Ascending order of Creation\ncreated_date_desc: | Sort list of Calculator/Quiz fetched in Descending order of Creation\nupdated_date_desc: | Sort list of Calculator/Quiz fetched in Descending order of Updation\nupdated_date_asc: | Sort list of Calculator/Quiz fetched in Ascending order of Updation\n",
+            "required": false,
+            "type": "string",
+            "default": "alpha_asc",
+            "enum": [
+                "alpha_asc",
+                "alpha_desc",
+                "created_date_asc",
+                "created_date_desc",
+                "updated_date_desc",
+                "updated_date_asc"
+            ]
+        }
     }
-   }
-  },
-  "/leads/add": {
-   "post": {
-    "tags": [
-     "Leads"
-    ],
-    "summary": "Creates a Lead",
-    "description": "Adds a new lead to the calculator.",
-    "parameters": [
-     {
-      "name": "lead",
-      "in": "body",
-      "required": true,
-      "schema": {
-       "$ref": "#/definitions/LeadPostBody"
-      }
-     }
-    ],
-    "responses": {
-     "200": {
-      "description": "Leads succesfully created.",
-      "schema": {
-       "$ref": "#/definitions/LeadCreatedBody"
-      }
-     },
-     "400": {
-      "description": "Leads couldn't have been created.",
-      "schema": {
-       "$ref": "#/definitions/ErrorResponse"
-      }
-     }
-    }
-   }
-  },
-  "/leads/{calculator}": {
-   "get": {
-    "tags": [
-     "Leads"
-    ],
-    "summary": "Get leads data",
-    "description": "Returns 'Leads' of particular Calculator/Quiz",
-    "operationId": "getLeads",
-    "produces": [
-     "application/json"
-    ],
-    "parameters": [
-     {
-      "name": "calculator",
-      "in": "path",
-      "required": true,
-      "description": "Live Calculator Id",
-      "type": "string"
-     },
-     {
-      "name": "limit",
-      "in": "query",
-      "description": "Number of Leads to return. For all: -1 or without Limit key all leads comes",
-      "required": false,
-      "type": "integer"
-     }
-    ],
-    "responses": {
-     "200": {
-      "description": "Success",
-      "schema": {
-       "$ref": "#/definitions/LeadListBody"
-      }
-     },
-     "default": {
-      "description": "Error",
-      "schema": {
-       "$ref": "#/definitions/ErrorResponse"
-      }
-     }
-    }
-   }
-  },
-  "/fields/{calculator}": {
-   "get": {
-    "tags": [
-     "Fields"
-    ],
-    "summary": "Gets Calcuator/Quiz Fields",
-    "description": "Gets the Configuration of the Calculator",
-    "produces": [
-     "application/json"
-    ],
-    "parameters": [
-     {
-      "name": "calculator",
-      "in": "path",
-      "required": true,
-      "description": "Live Calculator Id",
-      "type": "string"
-     },
-     {
-      "name": "type",
-      "in": "query",
-      "required": true,
-      "type": "string",
-      "default": "leads",
-      "enum": [
-       "leads",
-       "questions",
-       "results"
-      ],
-      "description": "Type Based:\n  * lead: Gets LeadForm Field of Calculator\n"
-     }
-    ],
-    "responses": {
-     "200": {
-      "description": "Success",
-      "schema": {
-       "$ref": "#/definitions/FieldListBody"
-      }
-     },
-     "default": {
-      "description": "Error",
-      "schema": {
-       "$ref": "#/definitions/ErrorResponse"
-      }
-     }
-    }
-   }
-  },
-  "/analytics/{calculators}": {
-   "get": {
-    "tags": [
-     "Analytics"
-    ],
-    "summary": "Gets Calculator/Quiz Analytics",
-    "description": "Gets all the Analytics of the calculator based on Live Calculator Id",
-    "produces": [
-     "application/json"
-    ],
-    "parameters": [
-     {
-      "name": "calculators",
-      "in": "path",
-      "required": true,
-      "description": "Live Calculator Id",
-      "type": "string"
-     },
-     {
-      "name": "start_date",
-      "in": "query",
-      "description": "Filter based on analytics of calculator start date\nformat: YYYY-MM-DD\n",
-      "required": false,
-      "type": "string",
-      "format": "date"
-     },
-     {
-      "name": "end_date",
-      "in": "query",
-      "description": "Filter based on analytics of calculator start date\nformat: YYYY-MM-DD\n",
-      "required": false,
-      "type": "string",
-      "format": "date"
-     }
-    ],
-    "responses": {
-     "200": {
-      "description": "Success",
-      "schema": {
-       "$ref": "#/definitions/AnalyticsListBody"
-      }
-     },
-     "default": {
-      "description": "Error",
-      "schema": {
-       "$ref": "#/definitions/ErrorResponse"
-      }
-     }
-    }
-   }
-  }
- },
- "securityDefinitions": {
-  "UserSecurity": {
-   "description": "Your API Key",
-   "type": "apiKey",
-   "name": "API-Key",
-   "in": "header"
-  }
- },
- "definitions": {
-  "ErrorResponse": {
-   "required": [
-    "response"
-   ],
-   "properties": {
-    "response": {
-     "type": "array",
-     "items": {
-      "$ref": "#/definitions/ErrorResponse_response"
-     }
-    }
-   }
-  },
-  "ErrorResponse_response": {
-   "required": [
-    "code",
-    "message"
-   ],
-   "properties": {
-    "code": {
-     "type": "integer"
-    },
-    "message": {
-     "type": "string"
-    },
-    "description": {
-     "type": "string"
-    }
-   }
-  },
-  "CalculatorListBody": {
-   "required": [
-    "calculators"
-   ],
-   "properties": {
-    "calculators": {
-     "type": "array",
-     "items": {
-      "$ref": "#/definitions/Calculator"
-     }
-    }
-   }
-  },
-  "Calculator": {
-   "required": [
-    "createdAt",
-    "id",
-    "name",
-    "state",
-    "type"
-   ],
-   "properties": {
-    "id": {
-     "type": "string"
-    },
-    "type": {
-     "type": "string"
-    },
-    "state": {
-     "type": "string"
-    },
-    "name": {
-     "type": "string"
-    },
-    "createdAt": {
-     "type": "string"
-    },
-    "updatedAt": {
-     "type": "string"
-    },
-    "meta_data": {
-     "$ref": "#/definitions/Calculator_meta_data"
-    }
-   }
-  },
-  "CalculatorErrorResponse": {
-   "required": [
-    "response"
-   ],
-   "properties": {
-    "response": {
-     "type": "object",
-     "items": {
-      "$ref": "#/definitions/CalculatorErrorResponse_response"
-     }
-    }
-   }
-  },
-  "Calculator_meta_data": {
-   "properties": {
-    "title": {
-     "type": "string"
-    },
-    "favicon": {
-     "type": "string"
-    },
-    "ga_tracking_id": {
-     "type": "string"
-    },
-    "url": {
-     "type": "string"
-    },
-    "description": {
-     "type": "string"
-    }
-   }
-  },
-  "CalculatorErrorResponse_response": {
-   "required": [
-    "message"
-   ],
-   "properties": {
-    "code": {
-     "type": "integer"
-    },
-    "message": {
-     "type": "string"
-    },
-    "description": {
-     "type": "string"
-    }
-   }
-  },
-  "LeadListBody": {
-   "required": [
-    "calculators"
-   ],
-   "properties": {
-    "calculators": {
-     "type": "array",
-     "items": {
-      "$ref": "#/definitions/Lead"
-     }
-    }
-   }
-  },
-  "Lead": {
-   "required": [
-    "id",
-    "calc_name",
-    "created_at"
-   ],
-   "properties": {
-    "id": {
-     "type": "string"
-    },
-    "calc_name": {
-     "type": "string"
-    },
-    "created_at": {
-     "type": "string"
-    },
-    "user_info": {
-     "type": "object"
-    },
-    "location": {
-     "type": "object"
-    },
-    "results": {
-     "type": "array",
-     "items": {
-      "type": "string"
-     }
-    },
-    "questions": {
-     "type": "array",
-     "items": {
-      "type": "string"
-     }
-    },
-    "total_question": {
-     "type": "number"
-    },
-    "answered": {
-     "type": "number"
-    }
-   }
-  },
-  "LeadPostBody": {
-   "required": [
-    "calculator"
-   ],
-   "properties": {
-    "calculator": {
-     "type": "string",
-     "description": "Live Calculator Id",
-     "example": "5892d26dcbff7e0b1c34bf65"
-    },
-    "leads": {
-     "type": "array",
-     "description": "Put all required Fields",
-     "items": {
-      "type": "object",
-      "properties": {
-       "key": {
-        "type": "string",
-        "description": "Fields Key name",
-        "example": "email"
-       },
-       "value": {
-        "type": "string",
-        "example": "admin@admin.com"
-       }
-      }
-     }
-    },
-    "questions": {
-     "type": "array",
-     "description": "Put Your Calculator Questions",
-     "items": {
-      "type": "object",
-      "properties": {
-       "key": {
-        "type": "string",
-        "description": "Questions Field key name",
-        "example": "what_is_your_calculator_name?"
-       },
-       "value": {
-        "type": [
-         "string",
-         "number",
-         "boolean"
-        ],
-        "description": "Set this property for the value of options\n",
-        "example": [
-         "test",
-         1,
-         true
-        ]
-       },
-       "answer": {
-        "type": "string",
-        "description": "Set this property when ever options has some text(don't use for slider)\n",
-        "example": "less than 1"
-       }
-      }
-     }
-    }
-   }
-  },
-  "LeadCreatedBody": {
-   "required": [
-    "success"
-   ],
-   "properties": {
-    "success": {
-     "type": "string"
-    },
-    "leads": {
-     "type": "array",
-     "items": {
-      "type": "object"
-     }
-    },
-    "questions": {
-     "type": "array",
-     "items": {
-      "type": "object"
-     }
-    },
-    "message": {
-     "type": "string"
-    }
-   }
-  },
-  "FieldListBody": {
-   "required": [
-    "response"
-   ],
-   "properties": {
-    "response": {
-     "type": "object"
-    },
-    "success": {
-     "type": "boolean"
-    },
-    "fields": {
-     "type": "array",
-     "items": {
-      "required": [
-       "key"
-      ],
-      "properties": {
-       "id": {
-        "type": "number"
-       },
-       "key": {
-        "type": "string"
-       },
-       "name": {
-        "type": "string"
-       },
-       "type": {
-        "type": "string"
-       }
-      }
-     }
-    }
-   }
-  },
-  "AnalyticsListBody": {
-   "required": [
-    "data",
-    "success"
-   ],
-   "properties": {
-    "data": {
-     "type": "object",
-     "items": {
-      "properties": {
-       "unique_visitors": {
-        "type": "number"
-       },
-       "visitors": {
-        "type": "number"
-       },
-       "time_on_page": {
-        "type": "string"
-       },
-       "conversions": {
-        "type": "number"
-       },
-       "conversion_rate": {
-        "type": "string"
-       },
-       "avg_response": {
-        "type": "string"
-       },
-       "engagements": {
-        "type": "string"
-       },
-       "calc_starts": {
-        "type": "string"
-       },
-       "deviceCategory": {
-        "type": "array"
-       },
-       "browser": {
-        "type": "array"
-       },
-       "country": {
-        "type": "array"
-       },
-       "socialNetwork": {
-        "type": "array"
-       }
-      }
-     }
-    },
-    "success": {
-     "type": "boolean"
-    }
-   }
-  }
- },
- "parameters": {
-  "CalculatorStatus": {
-   "name": "status",
-   "in": "query",
-   "description": "Filter Calculator/Quiz based on Status",
-   "required": false,
-   "type": "string",
-   "default": "Both",
-   "enum": [
-    "Both",
-    "Live",
-    "Draft"
-   ]
-  },
-  "Limit": {
-   "name": "limit",
-   "in": "query",
-   "description": "Number of Calculator/Quiz to return",
-   "required": false,
-   "type": "integer"
-  },
-  "CalculatorType": {
-   "name": "type",
-   "in": "query",
-   "description": "Filter based on type",
-   "required": false,
-   "type": "string",
-   "default": "Both",
-   "enum": [
-    "Both",
-    "Calculator",
-    "Quiz"
-   ]
-  },
-  "CreatedFrom": {
-   "name": "created_from",
-   "in": "query",
-   "description": "Filter based on created from date\nformat: YYYY-MM-DD\n",
-   "required": false,
-   "type": "string",
-   "format": "date"
-  },
-  "CreatedTo": {
-   "name": "created_to",
-   "in": "query",
-   "description": "Filter based on created from date\nformat: YYYY-MM-DD\n",
-   "required": false,
-   "type": "string",
-   "format": "date"
-  },
-  "SortBy": {
-   "name": "sort",
-   "in": "query",
-   "description": "Sort\nAn item can be sort of different type:\n  \ntype | description\n---- | -----------\nalpha_asc:  | Sort Calcualtor/Quiz by Ascending Name \nalpha_desc: | Sort Calcualtor/Quiz by Descending Name\ncreated_date_asc: | Sort Calcualtor/Quiz by Ascending Created Date\ncreated_date_desc: | Sort Calcualtor/Quiz by Descending Created Date\nupdated_date_desc: | Sort Calcualtor/Quiz by Descending Updated Date\nupdated_date_asc: | Sort Calcualtor/Quiz by Descending Updated Date\n",
-   "required": false,
-   "type": "string",
-   "default": "alpha_asc",
-   "enum": [
-    "alpha_asc",
-    "alpha_desc",
-    "created_date_asc",
-    "created_date_desc",
-    "updated_date_desc",
-    "updated_date_asc"
-   ]
-  }
- }
 }
