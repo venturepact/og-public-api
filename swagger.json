@@ -151,7 +151,7 @@
                     "Fields"
                 ],
                 "summary": "Get Calculator/Quiz/Poll Fields",
-                "description": null,
+                "description": "Gets the Configuration of the Calculator",
                 "produces": [
                     "application/json"
                 ],
@@ -647,7 +647,7 @@
         "CreatedFrom": {
             "name": "created_from",
             "in": "query",
-            "description": "Fetch calculators created on or after a particular date. Date format to be used is\n format: YYYY-MM-DD\n",
+            "description": "Fetch calculators created on or after a particular date.\n\nDate format to be used is-YYYY-MM-DD\n",
             "required": false,
             "type": "string",
             "format": "date"
@@ -655,7 +655,7 @@
         "CreatedTo": {
             "name": "created_to",
             "in": "query",
-            "description": "Fetch calculators created till a particular date. Date format to be used is \n format: YYYY-MM-DD\n",
+            "description": "Fetch calculators created till a particular date.\n\n Date format to be used is-YYYY-MM-DD\n",
             "required": false,
             "type": "string",
             "format": "date"
@@ -663,7 +663,7 @@
         "SortBy": {
             "name": "sort",
             "in": "query",
-            "description": "Sort\n the fetch list on following parameters:\n  \ntype | description\n---- | -----------\nalpha_asc:  | Sort list of Calculator/Quiz fetched in Ascending Alphabetic order\nalpha_desc: | Sort list of Calculator/Quiz fetched in Descending Alphabetic order\ncreated_date_asc: | Sort list of Calculator/Quiz fetched in Ascending order of Creation\ncreated_date_desc: | Sort list of Calculator/Quiz fetched in Descending order of Creation\nupdated_date_desc: | Sort list of Calculator/Quiz fetched in Descending order of Updation\nupdated_date_asc: | Sort list of Calculator/Quiz fetched in Ascending order of Updation\n",
+            "description": "Sort\n the fetch list on following parameters:\n  \ntype | description\n---- | -----------\nalpha_asc:  | Sort list of Calculator/Quiz/Poll fetched in Ascending Alphabetic order\nalpha_desc: | Sort list of Calculator/Quiz/Poll fetched in Descending Alphabetic order\ncreated_date_asc: | Sort list of Calculator/Quiz/Poll fetched in Ascending order of Creation\ncreated_date_desc: | Sort list of Calculator/Quiz/Poll fetched in Descending order of Creation\nupdated_date_desc: | Sort list of Calculator/Quiz/Poll fetched in Descending order of Updation\nupdated_date_asc: | Sort list of Calculator/Quiz/Poll fetched in Ascending order of Updation\n",
             "required": false,
             "type": "string",
             "default": "alpha_asc",
