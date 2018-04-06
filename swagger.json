@@ -28,7 +28,7 @@
                     "Calculators"
                 ],
                 "summary": "List all 'Calculators/Quizzes/Polls in your Outgrow account'",
-                "description": "Fetch 'Calculator or Quiz' in either live or draft mode of a company using API key",
+                "description": "Fetch 'Calculator or Quiz or Poll' in either live or draft mode of a company using API key",
                 "operationId": "getCalculator",
                 "produces": [
                     "application/json"
@@ -198,7 +198,7 @@
                 "tags": [
                     "Analytics"
                 ],
-                "summary": "Gets Calculator/Quiz Analytics",
+                "summary": "Gets Calculator/Quiz/Poll Analytics",
                 "description": "Gets the Analytics of the Live Calculator/ Quiz/Poll with the details of all the leads.",
                 "produces": [
                     "application/json"
@@ -614,7 +614,7 @@
         "CalculatorStatus": {
             "name": "status",
             "in": "query",
-            "description": "Select publish status of calculator/quiz",
+            "description": "Select publish status of calculator/quiz/Poll",
             "required": false,
             "type": "string",
             "default": "Both",
