@@ -627,7 +627,7 @@
         "Limit": {
             "name": "limit",
             "in": "query",
-            "description": "Enter the number of calculator/ quiz to fetch",
+            "description": "Enter the number of calculator/ quiz /poll to fetch",
             "required": false,
             "type": "integer"
         },
@@ -641,7 +641,8 @@
             "enum": [
                 "Both",
                 "Calculator",
-                "Quiz"
+                "Quiz",
+                "poll"
             ]
         },
         "CreatedFrom": {
